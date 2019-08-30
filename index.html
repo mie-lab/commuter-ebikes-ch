@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Scientifica</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="leaflet.css" />
+
+    <script src="leaflet.js"></script>
+    <script src="jquery-3.3.1.slim.min.js"></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+        }
+
+        .btn-primary {
+            background-color: rgb(53, 25, 62);
+            border-color: rgb(53, 25, 62);
+            color: #FFF;
+            margin-bottom: 6px;
+        }
+
+        .btn-primary:hover,
+        body .btn-primary:focus {
+            border-color: rgb(112, 31, 87);
+            background-color: rgb(112, 31, 87);
+            color: #FFF;
+        }
+
+        .btn-primary:active,
+        body .btn-primary:visited,
+        body .btn-primary:active:focus,
+        body .btn-primary:active:hover,
+        .btn-primary:not(:disabled):not(.disabled).active,
+        .btn-primary:not(:disabled):not(.disabled):active,
+        .show>.btn-primary.dropdown-toggle {
+            border-color: rgb(225, 51, 66);
+            background-color: rgb(225, 51, 66);
+            color: #FFF;
+        }
+
+        #go-left {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            width: 7.5%;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            background-color: #111;
+        }
+
+        #go-right {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            height: 100%;
+            width: 7.5%;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            background-color: #111;
+        }
+
+        .main {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 7.5%;
+            height: 100%;
+            width: 85%;
+            overflow-y: scroll;
+        }
+
+        #map {
+            width: 100%;
+            height: 90%;
+            color: black;
+        }
+
+        #sliders {
+            height: 10%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Portrait phones */
+        @media only screen and (max-device-width: 812px) and (orientation: portrait) {
+            #go-left {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                height: 10%;
+                width: 50%;
+                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.5rem;
+                color: white;
+                background-color: #111;
+            }
+
+            #go-right {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                height: 10%;
+                width: 50%;
+                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.5rem;
+                color: white;
+                background-color: #111;
+            }
+
+            .main {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 90%;
+                width: 100%;
+            }
+
+            #map {
+                height: 85%;
+            }
+
+            #sliders {
+                height: 15%;
+            }
+        }
+
+        @media only screen and (max-device-width: 400px) and (orientation: portrait) {
+            #map {
+                height: 75%;
+            }
+
+            #sliders {
+                height: 25%;
+            }
+        }
+
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        .info h4 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+
+        .legend {
+            text-align: left;
+            line-height: 18px;
+            color: #555;
+        }
+
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="go-left" onclick="navigate(-1);">
+        <i class="fas fa-chevron-circle-left"></i>
+    </div>
+
+    <div class="main" id="main-0">
+        <div class="container" style="margin-bottom: 3.5rem;">
+            <h1 style="margin-top: 5rem; margin-bottom: 2.5rem;">How much energy could we save if people in Switzerland
+                would use e-bikes for their commutes?</h1>
+
+            <p>
+                <img src="ebike-header.png" alt="" style="max-width: 100%;">
+            </p>
+        </div>
+    </div>
+
+    
+    <div class="main" id="main-1" style="visibility: hidden;">
+        <div class="container" style="margin-bottom: 3.5rem;">
+        
+            <p>
+                <div style="margin: 3rem; margin-bottom: 2rem;background-color:rgba(0, 105, 180, 0.3);">
+                <ul>
+                    <li style="padding-top:1em">Mitigation of global warming is an important challenge. <b><a href="https://www.nccs.admin.ch/nccs/en/home/climate-change-and-impacts/swiss-climate-change-scenarios/facts-and-figures/temperature.html">Current climate change projections estimate an increase in annual mean temperature of up to 5.4 °C for Switzerland by the end of the century.</a></b></li>
+                    <li style="padding-top:1em">In May 2017, the Swiss population voted on and approved the <i>Energy Strategy 2050</i> of the Swiss government. <b><a href="https://www.bfe.admin.ch/bfe/de/home/politik/energiestrategie-2050/_jcr_content/par/tabs/items/tab/tabpar/externalcontent.external.exturl.pdf/aHR0cHM6Ly9wdWJkYi5iZmUuYWRtaW4uY2gvZGUvcHVibGljYX/Rpb24vZG93bmxvYWQvODk5My5wZGY=.pdf">The <i>Energy Strategy 2050</i> aims at reducing the energy consumption per capita by 43% (compared to the year 2000) until the year 2035.</a></b></li>
+                    <li style="padding-top:1em"><b>The transport sector is the only sector without a decrease in energy consumption per capita compared to 1995.</b></li>
+                    <li style="padding-top:1em"><b>To reach the goals of <i>Energy Strategy 2050</i> the energy efficiency of the transport sector needs to be increased.</b></li>
+                </ul>
+                </div>
+            </p>
+
+            
+            <h1 style="text-align:center;margin-top: 2rem; margin-bottom: 2rem;">Problem statement</h1>
+            
+            <p>
+                Governments all around the world put measures into place to decrease our dependency on non-renewable
+                energy sources and to
+                keep the effects of humanity on global climate limited. While we are making progress in many areas,
+                transport and mobility
+                is usually a sector that is difficult to change: people do not want to travel less, and only recently
+                alternatives to
+                gasoline-powered vehicles have become widely available (but are often still quite expensive).
+
+            </p>
+            <p>
+                The following figure shows this at the example of Switzerland. While households, industry and the
+                service sector managed to decrease their energy consumption (per capita, which has to be carefully
+                considered!), the energy requirements for transport have increased since 1995.
+                So what to do about it?
+            </p>
+
+            <p>
+                <figure style="text-align: center;">
+                    <img src="energy-changes-transparent.png" alt="" style="width: 640px; max-width: 100%;">
+                    <figcaption style="font-size: xx-small;">Sources: <a href="https://www.bfe.admin.ch/bfe/de/home/versorgung/statistik-und-geodaten/energiestatistiken/gesamtenergiestatistik/_jcr_content/par/tabs/items/tab/tabpar/externalcontent.external.exturl.pdf/aHR0cHM6Ly9wdWJkYi5iZmUuYWRtaW4uY2gvZGUvcHVibGljYX/Rpb24vZG93bmxvYWQvNzEyNC5wZGY=.pdf">Schweizerische Gesamtenergiestatistik 1995 (BFE)</a>, <a href="https://www.bfe.admin.ch/bfe/de/home/versorgung/statistik-und-geodaten/energiestatistiken/gesamtenergiestatistik/_jcr_content/par/tabs/items/tab/tabpar/externalcontent.external.exturl.pdf/aHR0cHM6Ly9wdWJkYi5iZmUuYWRtaW4uY2gvZGUvcHVibGljYX/Rpb24vZG93bmxvYWQvOTc3NC5wZGY=.pdf">Schweizerische Gesamtenergiestatistik 2018 (BFE).</a>, <a href="https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken/tabellen.assetdetail.5886172.html">Bilanz der ständigen Wohnbevölkerung, 1861-2017 (BFS) </a></figcaption>
+                </figure>
+            </p>
+
+
+            <p>
+                Many people argue that especially in the short term, we also have to adapt our personal lifestyles to
+                decrease our energy demands.
+                But often, these claims are not backed up by data and studies. For example, what would happen if people
+                would commute by e-bike
+                in Switzerland (instead of their cars)? Could we save energy? Which people could actually use the e-bike
+                for commuting?
+            </p>
+
+            <p>
+                Click the arrow on the right to move to the next page.
+            </p>
+        </div>
+    </div>
+
+    <div class="main" id="main-2" style="visibility: hidden;">
+        <div class="container" style="margin-bottom: 3.5rem;">
+            <h1 style="text-align:center;margin-top: 5rem; margin-bottom: 2.5rem;">What we did and how to use it</h1>
+
+            <p>
+                <a href="https://www.bfs.admin.ch/bfs/de/home/statistiken/mobilitaet-verkehr/personenverkehr/pendlermobilitaet.assetdetail.8507273.html">The Swiss Federal Statistical Office provides a dataset of people's commutes on a municipality level</a>. Using this dataset, we modeled for each commuter in Switzerland what it would mean to travel by e-bike (in terms of distance, travel time, and the local weather conditions). We then created several scenarios that consider maximal travel durations and accounted for different weather conditions. Including weather is essential to model people's aversion to travel by bicycle on cold and rainy days. Finally, we aggregated the saving potentials on a municipality level to identify regions within Switzerland that would be particularly suited for e-bike commuters. This knowledge can be used to improve the infrastructure for e-bikes maximizing the energy reduction potentials, to incentivize people to try out e-bikes, or to do targeted marketing for e-bikes in those regions. 
+            </p>
+
+            <p>
+                We found that approx. <b>10% of all the emissions from diesel and gasoline commutes can be saved</b>.
+                If we also replace all gasoline-powered cars with electric ones, we can save up to 17.5% of all emissions! 
+                However, this requires people to travel on colder and slightly rainy days too.
+                On the next page you can take a look at the energy savings for each municipality.
+            </p>
+
+            <p>
+                <div style="text-align: center;">
+                    <img src="mapexplanation.png" alt="" style="width: 720px; max-width: 100%;">
+                </div>
+            </p>
+
+            <p>
+                <a href="https://www.sciencedirect.com/science/article/pii/S1364032119305064?via%3Dihub">If you're interested in reading more, you can download the research paper from here</a>.
+                Before you do, click on the right arrow to look at the energy saving potentials!
+            </p>
+        </div>
+    </div>
+
+    <div class="main" id="main-3" style="visibility: hidden;">
+        <div id='map'></div>
+        <div id="sliders">
+
+            <div style="vertical-align: middle;padding-right:1em">
+            Maximal e-bike trip duration:
+            </div>
+
+            <div>
+                <button  type="button" id="scenario-button-15" class="scenario-btn btn btn-primary active"
+                    onclick="updateSlider(15); this.classList.add('active');">15 min</button>
+                <button  type="button" id="scenario-button-20" class="scenario-btn btn btn-primary"
+                    onclick="updateSlider(20); this.classList.add('active');">20 min</button>
+                <button  type="button" id="scenario-button-25" class="scenario-btn btn btn-primary"
+                    onclick="updateSlider(25); this.classList.add('active');">25 min</button>
+                <button  type="button" id="scenario-button-30" class="scenario-btn btn btn-primary"
+                    onclick="updateSlider(30); this.classList.add('active');">30 min</button>
+                <button  type="button" id="scenario-button-35" class="scenario-btn btn btn-primary"
+                    onclick="updateSlider(35); this.classList.add('active');">35 min</button>
+                <button  type="button" id="scenario-button-40" class="scenario-btn btn btn-primary"
+                    onclick="updateSlider(40); this.classList.add('active');">40 min</button>
+                <button  type="button" id="scenario-button-45" class="scenario-btn btn btn-primary"
+                    onclick="updateSlider(45); this.classList.add('active');">45 min</button>
+                <button  type="button" id="scenario-button-50" class="scenario-btn btn btn-primary"
+                    onclick="updateSlider(50); this.classList.add('active');">50 min</button>
+                <button  type="button" id="scenario-button-55" class="scenario-btn btn btn-primary"
+                    onclick="updateSlider(55); this.classList.add('active');">55 min</button>
+                <button  type="button" id="scenario-button-60" class="scenario-btn btn btn-primary"
+                    onclick="updateSlider(60); this.classList.add('active');">60 min</button>
+            </div>
+
+
+        </div>
+    </div>
+    
+    <div class="main" id="main-4" style="visibility: hidden;">
+
+        <div class="container" style="margin-bottom: 3.5rem;">
+    
+            <div>
+                <h1 style="text-align:center;margin-top: 5rem; margin-bottom: 2.5rem;">Energy reduction potentials for different temperature scenarios</h1>
+                <div>
+                    <img src="tot_energy_consumption.png"  style="display: block; margin-left: auto; margin-right: auto;width: 100%; max-width: 100%;">
+                </div>
+            </div>
+                
+                
+            <div>
+                <h1 style="text-align:center;margin-top: 5rem; margin-bottom: 2.5rem;">Greenhouse gas reduction potentials for different temperature scenarios</h1>
+                <div>
+                    <img src="tot_co2.png" style="display: block; margin-left: auto; margin-right: auto;width: 100%; max-width: 100%;">
+                </div>
+            </div>
+        
+        </div>
+
+    </div>
+
+    <div id="go-right" onclick="navigate(1);">
+        <i class="fas fa-chevron-circle-right"></i>
+    </div>
+
+    <script type="text/javascript" src="scientifica.js"></script>
+
+    <script type="text/javascript">
+
+        var map = L.map('map');
+
+        var corner1 = L.latLng(45.82, 5.96),
+        corner2 = L.latLng(47.81, 10.49),
+        bounds = L.latLngBounds(corner1, corner2);
+        map.fitBounds(bounds);
+        
+        var page = 0;
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicmJ1ZmZhdCIsImEiOiJjamRscTg1MDcwYnJrMnd0N2Zxam0wNDhwIn0.hhlvxpJbfgs265oQLkw5iQ', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            id: 'mapbox.light'
+        }).addTo(map);
+
+        function navigate(amount) {
+            var max_page = 4;
+            page += amount;
+            
+            if(page > max_page) {
+                page = 0;
+            }
+            
+            if(page < 0) {
+                page = max_page;
+            }
+
+            $('.main').css('visibility', 'hidden');
+            $('#main-' + page).css('visibility', 'visible');
+        }
+
+        function highlightFeature(e) {
+            var layer = e.target;
+
+            layer.setStyle({
+                weight: 5,
+                color: '#666',
+                dashArray: '',
+                fillOpacity: 0.7
+            });
+
+            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                layer.bringToFront();
+            }
+
+            info.update(layer.feature.properties);
+        }
+
+        function resetHighlight(e) {
+            geojson.resetStyle(e.target);
+            info.update();
+        }
+
+        function zoomToFeature(e) {
+            map.fitBounds(e.target.getBounds());
+        }
+
+        function onEachFeature(feature, layer) {
+            layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight,
+                click: zoomToFeature
+            });
+        }
+
+        map.attributionControl.addAttribution('Grenzen 2014, BFS GEOSTAT / swisstopo');
+
+        var info = null;
+        var legend = null;
+        var geojson = null;
+        var minutes = 15;
+
+        function change_map(new_data_key) {
+            // Remove map
+
+            if (legend != null) {
+                map.removeControl(legend);
+            } else {
+            }
+
+            if (geojson != null) {
+                map.removeLayer(geojson);
+            }
+
+            if (info != null) {
+                map.removeControl(info);
+            }
+
+            // Get min and max values
+
+            var vmax = -Infinity;
+            var vmin = Infinity;
+            for (i = 0; i < geojsonFeatures.features.length; i++) {
+                val = geojsonFeatures.features[i].properties[new_data_key];
+
+                if (val > 0) {
+                    vmax = Math.max(vmax, val);
+                    vmin = Math.min(vmin, val);
+                }
+            };
+            vmin = 0;
+
+            // control that shows state info on hover
+            info = L.control();
+
+            info.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+
+            info.update = function (props) {
+                this._div.innerHTML = '<h4>Municipality</h4>' + (props ?
+                    '<b>' + props.GMDNAME + '</b><br />' + props[new_data_key] + ' kWh / Car commuter'
+                    : 'Hover over a municipality');
+            };
+
+            info.addTo(map);
+
+            function getColor(d) {
+
+                var colors = ['#35193e',
+                    '#701f57',
+                    '#ad1759',
+                    '#e13342',
+                    '#f37651',
+                    '#f6b48f'
+                ];
+
+                interval = (vmax - vmin) / colors.length;
+
+                step = (d - vmin) / interval;
+                step = Math.min(colors.length - 1, step);
+                step = Math.max(0, step);
+                step = Math.trunc(step);
+
+
+                return colors[step];
+            }
+
+            function style(feature) {
+                return {
+                    weight: 1.0,
+                    opacity: 1,
+                    color: getColor(feature.properties[new_data_key]),
+                    dashArray: '3',
+                    fillOpacity: 1.0,
+                    smoothFactor: 0.6,
+                    fillColor: getColor(feature.properties[new_data_key])
+                };
+            }
+
+
+            geojson = L.geoJson(geojsonFeatures, {
+                style: style,
+                onEachFeature: onEachFeature
+            }).addTo(map);
+
+
+            legend = L.control({ position: 'bottomright' });
+
+            legend.onAdd = function (map) {
+
+                var labels = [];
+
+                var div = L.DomUtil.create('div', 'info legend');
+                labels.push('<div style="text-align:center;font-weight: bold;">Energy savings <br> per car commuter <br> [kWh / Person]</div><br>');
+                for (var i = 0; i < 7; i++) {
+                    val_from = vmin + i * interval;
+                    val_to = val_from + interval;
+                    labels.push(
+                        '<div style="text-align:center; margin: 0.1em;padding:0em;"><i style="background:' + getColor(val_from) + '"></i> ' +
+                        Math.trunc(val_from) + ' &ndash; <' + Math.trunc(val_to) + "</div>");
+                };
+
+                div.innerHTML = labels.join('');
+                return div;
+            };
+
+            legend.addTo(map);
+
+            return
+        }
+
+        
+        document.addEventListener("keydown", function(event) {
+            if (event.which == 84) {
+            
+                var myVar = setInterval(myTimer, 1000);
+                function myTimer() {
+                    var new_mins = minutes + 5;
+                    if (new_mins > 60) {
+                        new_mins = 15;
+                    }
+
+                    updateSlider(new_mins);
+
+                }
+            
+            }
+        });
+
+
+        change_map("15min_10C");
+
+
+        function updateSlider(slideAmount) {
+        
+            minutes = slideAmount;
+            $('.scenario-btn').removeClass('active');
+            $('#scenario-button-' + slideAmount).addClass('active');
+            change_map(slideAmount + "min_10C");
+        }
+
+
+    </script>
+
+
+
+</body>
+
+</html>
