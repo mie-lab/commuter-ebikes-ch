@@ -49,50 +49,9 @@
             color: #FFF;
         }
 
-        #go-left {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            height: 100%;
-            width: 7.5%;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: white;
-            background-color: #111;
-        }
-
-        #go-right {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            height: 100%;
-            width: 7.5%;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: white;
-            background-color: #111;
-        }
-
-        .main {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 7.5%;
-            height: 100%;
-            width: 85%;
-            overflow-y: scroll;
-        }
-
         #map {
+            height: 650px;
             width: 100%;
-            height: 90%;
-            color: black;
         }
 
         #sliders {
@@ -100,65 +59,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        /* Portrait phones */
-        @media only screen and (max-device-width: 812px) and (orientation: portrait) {
-            #go-left {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                height: 10%;
-                width: 50%;
-                text-align: center;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 2.5rem;
-                color: white;
-                background-color: #111;
-            }
-
-            #go-right {
-                position: fixed;
-                bottom: 0;
-                right: 0;
-                height: 10%;
-                width: 50%;
-                text-align: center;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 2.5rem;
-                color: white;
-                background-color: #111;
-            }
-
-            .main {
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 90%;
-                width: 100%;
-            }
-
-            #map {
-                height: 85%;
-            }
-
-            #sliders {
-                height: 15%;
-            }
-        }
-
-        @media only screen and (max-device-width: 400px) and (orientation: portrait) {
-            #map {
-                height: 75%;
-            }
-
-            #sliders {
-                height: 25%;
-            }
+            margin-top: 1rem;
         }
 
         .info {
@@ -194,10 +95,6 @@
 
 <body>
 
-    <div id="go-left" onclick="navigate(-1);">
-        <i class="fas fa-chevron-circle-left"></i>
-    </div>
-
     <div class="main" id="main-0">
         <div class="container" style="margin-bottom: 3.5rem;">
             <h1 style="margin-top: 5rem; margin-bottom: 2.5rem;">How much energy could we save if people in Switzerland
@@ -215,19 +112,17 @@
                 <img src="logo_eth.png" style="width: 200px; margin-left: 2rem; margin-right: 2rem; margin-top: 2rem;" alt="">
             </div>
             
-            <p style="text-align: center; margin-top: 2rem;">
-                Click the arrow on the right to move to the next page.
-            </p>
         </div>
     </div>
 
-    
-    <div class="main" id="main-1" style="visibility: hidden;">
+    <br>
+
+    <div class="main" id="main-1">
         <div class="container" style="margin-bottom: 3.5rem;">
         
             <p>
                 <div style="margin: 3rem; padding-bottom: 0.3rem; margin-bottom: 2rem;background-color:rgba(0, 105, 180, 0.3);">
-                <ul>
+                <ul style="padding-right: 1rem;">
                     <li style="padding-top:1em">Mitigation of global warming is an important challenge. <b><a target="_blank" href="https://www.nccs.admin.ch/nccs/en/home/climate-change-and-impacts/swiss-climate-change-scenarios/facts-and-figures/temperature.html">Current climate change projections estimate an increase in annual mean temperature of up to 5.4 °C for Switzerland by the end of the century.</a></b></li>
                     <li style="padding-top:1em">In May 2017, the Swiss population voted on and approved the <i>Energy Strategy 2050</i> of the Swiss government. <b><a target="_blank" href="https://www.bfe.admin.ch/bfe/de/home/politik/energiestrategie-2050/_jcr_content/par/tabs/items/tab/tabpar/externalcontent.external.exturl.pdf/aHR0cHM6Ly9wdWJkYi5iZmUuYWRtaW4uY2gvZGUvcHVibGljYX/Rpb24vZG93bmxvYWQvODk5My5wZGY=.pdf">The <i>Energy Strategy 2050</i> aims at reducing the energy consumption per capita by 43% (compared to the year 2000) until the year 2035.</a></b></li>
                     <li style="padding-top:1em"><b>The transport sector is the only sector without a decrease in energy consumption per capita compared to 1995.</b></li>
@@ -236,6 +131,7 @@
                 </div>
             </p>
 
+            <br>
             
             <h1 style="text-align:center;margin-top: 2rem; margin-bottom: 2rem;">Problem statement</h1>
             
@@ -272,14 +168,10 @@
                 in Switzerland (instead of their cars)? Could we save energy? Which people could actually use the e-bike
                 for commuting?
             </p>
-
-            <p>
-                Click the arrow on the right to move to the next page.
-            </p>
         </div>
     </div>
 
-    <div class="main" id="main-2" style="visibility: hidden;">
+    <div class="main" id="main-2">
         <div class="container" style="margin-bottom: 3.5rem;">
             <h1 style="text-align:center;margin-top: 5rem; margin-bottom: 2.5rem;">What we did and how to use it</h1>
 
@@ -302,12 +194,11 @@
 
             <p>
                 <a target="_blank" href="https://www.researchgate.net/publication/335118713_Energy_and_greenhouse_gas_emission_reduction_potentials_resulting_from_different_commuter_electric_bicycle_adoption_scenarios_in_Switzerland">If you're interested in reading more, you can download the research paper from here</a>.
-                Before you do, click on the right arrow to look at the energy saving potentials!
             </p>
         </div>
     </div>
 
-    <div class="main" id="main-3" style="visibility: hidden;">
+    <div class="main" id="main-3">
         <div id='map'></div>
         <div id="sliders">
 
@@ -341,52 +232,17 @@
 
         </div>
     </div>
-    
-    <div class="main" id="main-4" style="visibility: hidden;">
+
+    <div class="main" id="main-5">
 
         <div class="container" style="margin-bottom: 3.5rem;">
-    
-            <div>
-                <h1 style="text-align:center;margin-top: 5rem; margin-bottom: 2.5rem;">Energy reduction potentials for different temperature scenarios</h1>
-                <div>
-                    <img src="tot_energy_consumption.png"  style="display: block; margin-left: auto; margin-right: auto;width: 100%; max-width: 100%;">
-                </div>
-            </div>
-                
-                
-            <div>
-                <h1 style="text-align:center;margin-top: 5rem; margin-bottom: 2.5rem;">Greenhouse gas reduction potentials for different temperature scenarios</h1>
-                <div>
-                    <img src="tot_co2.png" style="display: block; margin-left: auto; margin-right: auto;width: 100%; max-width: 100%;">
-                </div>
-            </div>
-        
-        </div>
-
-    </div>
-
-    <div class="main" id="main-5" style="visibility: hidden;">
-
-        <div class="container" style="margin-bottom: 3.5rem;">
-
-            <h1 style="text-align:center;margin-top: 5rem; margin-bottom: 2.5rem;">Website</h1>
-            
-            <p>
-                <div style="text-align:center">
-                    <a href="https://mie-lab.github.io/commuter-ebikes-ch"><h2>https://mie-lab.github.io/commuter-ebikes-ch</h2></a>
-                </div>
-            </p>
-
-            <p style="text-align:center">
-                <img src="qr_url.png" alt="" style="max-width: 100%;">
-            </p>
             
             
             <h1 style="text-align:center;margin-top: 5rem; margin-bottom: 2.5rem;">Link to Publication</h1>
             
             <article>
 
-            <div class="info pub_old">
+            <div class="info pub_old" style="padding: 1rem;">
 
                 <div class="pub_title"><b>Energy and greenhouse gas emission reduction potentials resulting from different commuter electric bicycle adoption scenarios in Switzerland</b></div><div class="pub_authors">Dominik Bucher, René Buffat, Andreas Frömelt and Martin Raubal</div><div class="pub_info"><span class="book_title">Renewable and Sustainable Energy Reviews</span>, vol. 114, pp. 109298, Amsterdam: Elsevier, 2019.</div>
 
@@ -411,8 +267,27 @@
 
     </div>
     
-    <div id="go-right" onclick="navigate(1);">
-        <i class="fas fa-chevron-circle-right"></i>
+    <div class="main" id="main-4">
+
+        <div class="container" style="margin-bottom: 3.5rem;">
+    
+            <div>
+                <h3 style="text-align:center;margin-top: 5rem; margin-bottom: 2.5rem;">Appendix 1: Energy reduction potentials for different temperature scenarios</h3>
+                <div>
+                    <img src="tot_energy_consumption.png"  style="display: block; margin-left: auto; margin-right: auto;width: 100%; max-width: 100%;">
+                </div>
+            </div>
+                
+                
+            <div>
+                <h3 style="text-align:center;margin-top: 5rem; margin-bottom: 2.5rem;">Appendix 2: Greenhouse gas reduction potentials for different temperature scenarios</h3>
+                <div>
+                    <img src="tot_co2.png" style="display: block; margin-left: auto; margin-right: auto;width: 100%; max-width: 100%;">
+                </div>
+            </div>
+        
+        </div>
+
     </div>
 
     <script type="text/javascript" src="scientifica.js"></script>
@@ -435,22 +310,6 @@
                 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox.light'
         }).addTo(map);
-
-        function navigate(amount) {
-            var max_page = 5;
-            page += amount;
-            
-            if(page > max_page) {
-                page = 0;
-            }
-            
-            if(page < 0) {
-                page = max_page;
-            }
-
-            $('.main').css('visibility', 'hidden');
-            $('#main-' + page).css('visibility', 'visible');
-        }
 
         function highlightFeature(e) {
             var layer = e.target;
